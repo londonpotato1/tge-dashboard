@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TGE & FDV Dashboard — Apr 2026</title>
+<meta name="description" content="10 pre-TGE 프로젝트 밸류에이션 비교 대시보드. Polymarket FDV 확률 + 토크노믹스 + TGE short 매력도 랭킹.">
+<meta property="og:title" content="TGE & FDV Dashboard — Apr 2026">
+<meta property="og:description" content="Polymarket 확률 기반 10개 pre-TGE 프로젝트 비교 분석">
+<meta property="og:type" content="website">
+
+<style>
+  :root[data-theme="light"] {
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F7F6F2;
+    --bg-tertiary: #F1EFE8;
+    --bg-info: #E6F1FB;
+    --bg-warning: #FAEEDA;
+    --text-primary: #1A1A19;
+    --text-secondary: #5F5E5A;
+    --text-tertiary: #888780;
+    --text-info: #0C447C;
+    --text-warning: #854F0B;
+    --border-tertiary: rgba(0,0,0,0.08);
+    --border-secondary: rgba(0,0,0,0.15);
+    --shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  :root[data-theme="dark"] {
+    --bg-primary: #1C1C1A;
+    --bg-secondary: #252523;
+    --bg-tertiary: #2C2C2A;
+    --bg-info: #0C447C;
+    --bg-warning: #633806;
+    --text-primary: #F1EFE8;
+    --text-secondary: #B4B2A9;
+    --text-tertiary: #888780;
+    --text-info: #B5D4F4;
+    --text-warning: #FAC775;
+    --border-tertiary: rgba(255,255,255,0.1);
+    --border-secondary: rgba(255,255,255,0.18);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    transition: background 0.2s, color 0.2s;
+  }
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  header h1 {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 0.25rem;
+  }
+  header .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .theme-toggle {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border-secondary);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .theme-toggle:hover { background: var(--bg-secondary); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .stat-card {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+  .stat-value {
+    font-size: 24px;
+    font-weight: 500;
+  }
+  .stat-hint {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+  }
+
+  .controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .btn {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border-secondary);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--bg-secondary); }
+  .btn.active {
+    background: var(--bg-info);
+    color: var(--text-info);
+    border-color: var(--text-info);
+  }
+  .share-link {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .copy-btn {
+    background: transparent;
+    border: 0.5px solid var(--border-secondary);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+
+  #card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 12px;
+  }
+  .project-card {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border-tertiary);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: var(--shadow);
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .card-title {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .card-ticker {
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  .badge-status {
+    padding: 3px 10px;
+    white-space: nowrap;
+  }
+  .status-launched { background: var(--bg-info); color: var(--text-info); }
+  .status-pre-tge { background: var(--bg-warning); color: var(--text-warning); }
+
+  .kv-grid {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 4px 8px;
+    font-size: 12px;
+  }
+  .kv-key { color: var(--text-secondary); }
+  .kv-val { word-break: break-word; }
+
+  .poly-box {
+    padding: 8px 10px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .poly-label {
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+  }
+  .poly-data {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+  }
+
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; font-size: 11px; }
+  .tag { padding: 2px 8px; border-radius: 6px; }
+  .tag-neutral { background: var(--bg-secondary); color: var(--text-secondary); }
+
+  .note-box {
+    padding: 8px 10px;
+    background: var(--bg-info);
+    border-radius: 6px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text-info);
+  }
+
+  .card-section { font-size: 12px; line-height: 1.5; }
+  .card-section strong { font-weight: 500; color: var(--text-primary); }
+  .card-section span { color: var(--text-secondary); }
+
+  .card-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .card-actions a {
+    flex: 1;
+    text-decoration: none;
+    text-align: center;
+    font-size: 11px;
+    padding: 6px 8px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    color: var(--text-primary);
+    transition: background 0.15s;
+  }
+  .card-actions a:hover { background: var(--bg-tertiary); }
+
+  .chart-section {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: var(--bg-primary);
+    border-radius: 12px;
+    border: 0.5px solid var(--border-tertiary);
+  }
+  .chart-title { font-size: 16px; font-weight: 500; margin: 0 0 4px; }
+  .chart-sub { font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin: 0 0 1rem; }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+    height: 480px;
+  }
+
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px;
+    margin-top: 1.5rem;
+  }
+  .tier-box {
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+  .tier-red { background: #FCEBEB; color: #501313; }
+  .tier-amber { background: #FAEEDA; color: #412402; }
+  .tier-green { background: #E1F5EE; color: #04342C; }
+  :root[data-theme="dark"] .tier-red { background: #501313; color: #F7C1C1; }
+  :root[data-theme="dark"] .tier-amber { background: #412402; color: #FAC775; }
+  :root[data-theme="dark"] .tier-green { background: #04342C; color: #9FE1CB; }
+  .tier-title { font-weight: 500; font-size: 13px; margin-bottom: 4px; }
+  .tier-text { font-size: 11px; line-height: 1.5; }
+
+  footer {
+    margin-top: 3rem;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    text-align: center;
+  }
+  footer a { color: var(--text-info); }
+
+  @media (max-width: 600px) {
+    .container { padding: 1rem; }
+    #card-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>TGE & FDV Dashboard</h1>
+        <p class="subtitle">10 pre-TGE crypto projects · Polymarket FDV forecasts · Apr 2026</p>
+      </div>
+      <button class="theme-toggle" id="theme-toggle">🌙 Dark</button>
+    </header>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">프로젝트 수</div>
+        <div class="stat-value">10</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">이미 TGE 완료</div>
+        <div class="stat-value" id="stat-launched">3</div>
+        <div class="stat-hint" id="stat-launched-list">Fluent, USD.AI, Octra</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Q2 2026 TGE 예정</div>
+        <div class="stat-value">4</div>
+        <div class="stat-hint">Pharos, Solstice, Variational, Ink</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">미정/지연</div>
+        <div class="stat-value">3</div>
+        <div class="stat-hint">Extended, GRVT(Q3), Surf</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" data-action="sort-fdv">FDV 순 정렬</button>
+      <button class="btn" data-action="sort-conf">Polymarket 신뢰도 순</button>
+      <button class="btn" data-action="sort-risk">리스크 낮은 순</button>
+      <button class="btn" data-action="sort-short">Short 매력도 순</button>
+      <button class="btn" data-action="filter-launched">TGE 완료만</button>
+      <button class="btn" data-action="filter-pre-tge">Pre-TGE만</button>
+      <button class="btn" data-action="reset">전체 보기</button>
+      <div class="share-link">
+        <span id="current-filter">filter: all</span>
+        <button class="copy-btn" id="copy-url">🔗 URL 복사</button>
+      </div>
+    </div>
+
+    <div id="card-grid"></div>
+
+    <div class="chart-section">
+      <div class="chart-title">TGE dump short 매력도 랭킹</div>
+      <p class="chart-sub">Polymarket이 public sale / ICO FDV 근처에서 "낮은 FDV" 확률을 높게 주고 있을수록 dump 가능성을 시장이 이미 반영. 점수 = (sale FDV 이하 확률 × 2) + (mode가 sale 이하일수록 가점). 100점 만점.</p>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot" style="background: #A32D2D;"></span>매우 높음 (80+)</span>
+        <span class="legend-item"><span class="legend-dot" style="background: #EF9F27;"></span>중간 (50-80)</span>
+        <span class="legend-item"><span class="legend-dot" style="background: #5DCAA5;"></span>낮음 (long bias)</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="shortChart" role="img" aria-label="TGE short 매력도 점수 막대 그래프">TGE short attractiveness rankings.</canvas>
+      </div>
+
+      <div class="tier-grid">
+        <div class="tier-box tier-red">
+          <div class="tier-title">1순위: Octra, Fluent, Solstice</div>
+          <div class="tier-text">ICO/public sale가 있었고, Polymarket이 sale FDV보다 낮은 구간에 확률 집중. 상장 직후 funding normalization + ATH drawdown 조건 충족 시 숏 진입.</div>
+        </div>
+        <div class="tier-box tier-amber">
+          <div class="tier-title">2순위: Surf, GRVT</div>
+          <div class="tier-text">TGE 지연/미확정으로 팜 피로도 누적. 에어드랍 dumper 많을 것. Surf는 토큰 출시 자체가 불확실해 배팅 신중.</div>
+        </div>
+        <div class="tier-box tier-green">
+          <div class="tier-title">Long 편향: Pharos, Ink, Variational, USD.AI</div>
+          <div class="tier-text">Pharos는 PM이 >$500M도 60%. Ink는 Kraken IPO 내러티브. Variational은 50% 커뮤니티 + buyback. USD.AI는 TVL $500M+.</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      데이터 기준 2026-04-17 · Polymarket 스냅샷 CryptoDep 2026-04-15 · 
+      <a href="https://github.com/" id="repo-link">GitHub Repository</a> · 
+      Built with Claude
+    </footer>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const colorMap = {
+  purple: { fill: "#EEEDFE", border: "#534AB7", text: "#26215C", darkFill: "#3C3489", darkText: "#CECBF6" },
+  teal: { fill: "#E1F5EE", border: "#0F6E56", text: "#04342C", darkFill: "#085041", darkText: "#9FE1CB" },
+  blue: { fill: "#E6F1FB", border: "#185FA5", text: "#042C53", darkFill: "#0C447C", darkText: "#B5D4F4" },
+  coral: { fill: "#FAECE7", border: "#993C1D", text: "#4A1B0C", darkFill: "#712B13", darkText: "#F5C4B3" },
+  pink: { fill: "#FBEAF0", border: "#993556", text: "#4B1528", darkFill: "#72243E", darkText: "#F4C0D1" },
+  amber: { fill: "#FAEEDA", border: "#854F0B", text: "#412402", darkFill: "#633806", darkText: "#FAC775" },
+  green: { fill: "#EAF3DE", border: "#3B6D11", text: "#173404", darkFill: "#27500A", darkText: "#C0DD97" },
+  gray: { fill: "#F1EFE8", border: "#5F5E5A", text: "#2C2C2A", darkFill: "#444441", darkText: "#D3D1C7" },
+  red: { fill: "#FCEBEB", border: "#A32D2D", text: "#501313", darkFill: "#791F1F", darkText: "#F7C1C1" }
+};
+
+const riskPriority = { "낮음": 1, "중": 2, "고": 3, "매우 고": 4 };
+
+let PROJECTS = [];
+let current = [];
+let activeFilter = "all";
+let activeSort = null;
+
+function pmMedianNum(p) {
+  const s = p.pmMedian.match(/\d+/);
+  if (!s) return 0;
+  const n = parseInt(s[0]);
+  if (p.pmMedian.includes("B")) return n * 1000;
+  return n;
+}
+
+function getConfidence(p) {
+  const m = p.fdvPoly.match(/>?\$?\d+M?B?\s*\((\d+)%\)/);
+  return m ? parseInt(m[1]) : 0;
+}
+
+function isDark() {
+  return document.documentElement.getAttribute("data-theme") === "dark";
+}
+
+function render(list) {
+  const grid = document.getElementById("card-grid");
+  const dark = isDark();
+
+  grid.innerHTML = list.map(p => {
+    const c = colorMap[p.catColor];
+    const r = colorMap[p.riskColor];
+    const catBg = dark ? c.darkFill : c.fill;
+    const catText = dark ? c.darkText : c.text;
+    const riskBg = dark ? r.darkFill : r.fill;
+    const riskText = dark ? r.darkText : r.text;
+    const statusClass = p.status === "launched" ? "status-launched" : "status-pre-tge";
+
+    return `
+      <div class="project-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">${p.name} <span class="card-ticker">$${p.ticker}</span></div>
+            <div class="badge" style="margin-top: 4px; background: ${catBg}; color: ${catText};">${p.cat}</div>
+          </div>
+          <div class="badge badge-status ${statusClass}">${p.statusLabel}</div>
+        </div>
+
+        <div class="kv-grid">
+          <div class="kv-key">TGE</div>
+          <div class="kv-val">${p.tge}</div>
+          <div class="kv-key">Raised</div>
+          <div class="kv-val">${p.raised}</div>
+          <div class="kv-key">Target FDV</div>
+          <div class="kv-val">${p.valuation}</div>
+          <div class="kv-key">PM mode</div>
+          <div class="kv-val" style="font-weight: 500;">${p.pmMode}</div>
+        </div>
+
+        <div class="poly-box">
+          <div class="poly-label">Polymarket FDV 확률</div>
+          <div class="poly-data">${p.fdvPoly}</div>
+        </div>
+
+        <div class="tags">
+          <span class="tag" style="background: ${riskBg}; color: ${riskText};">Risk: ${p.risk}</span>
+          <span class="tag tag-neutral">Momentum: ${p.momentum}</span>
+          <span class="tag tag-neutral">Short: ${p.shortScore}/100</span>
+        </div>
+
+        <div class="card-section"><strong>Backers:</strong> <span>${p.backers}</span></div>
+        <div class="card-section"><strong>Tokenomics:</strong> <span>${p.tokenomics}</span></div>
+        <div class="card-section"><strong>Community:</strong> <span>${p.community}</span></div>
+
+        <div class="note-box">💡 ${p.note}</div>
+
+        <div class="card-actions">
+          <a href="${p.links.website}" target="_blank" rel="noopener">Website ↗</a>
+          <a href="${p.links.twitter}" target="_blank" rel="noopener">Twitter ↗</a>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function applyFilter(filter) {
+  activeFilter = filter;
+  if (filter === "all") current = [...PROJECTS];
+  else current = PROJECTS.filter(p => p.status === filter);
+  if (activeSort) applySort(activeSort);
+  else render(current);
+  updateControlsUI();
+  updateUrl();
+}
+
+function applySort(sortKey) {
+  activeSort = sortKey;
+  if (sortKey === "fdv") current.sort((a, b) => pmMedianNum(b) - pmMedianNum(a));
+  else if (sortKey === "conf") current.sort((a, b) => getConfidence(b) - getConfidence(a));
+  else if (sortKey === "risk") current.sort((a, b) => riskPriority[a.risk] - riskPriority[b.risk]);
+  else if (sortKey === "short") current.sort((a, b) => b.shortScore - a.shortScore);
+  render(current);
+  updateControlsUI();
+  updateUrl();
+}
+
+function reset() {
+  activeFilter = "all";
+  activeSort = null;
+  current = [...PROJECTS];
+  render(current);
+  updateControlsUI();
+  updateUrl();
+}
+
+function updateControlsUI() {
+  document.querySelectorAll(".btn").forEach(b => b.classList.remove("active"));
+  const map = {
+    "all": null,
+    "launched": '[data-action="filter-launched"]',
+    "pre-tge": '[data-action="filter-pre-tge"]'
+  };
+  const filterSel = map[activeFilter];
+  if (filterSel) document.querySelector(filterSel)?.classList.add("active");
+  if (activeSort) document.querySelector(`[data-action="sort-${activeSort}"]`)?.classList.add("active");
+
+  const labels = { "all": "all", "launched": "TGE 완료만", "pre-tge": "Pre-TGE만" };
+  const sortLabels = { "fdv": " · FDV순", "conf": " · 신뢰도순", "risk": " · 리스크순", "short": " · Short순" };
+  document.getElementById("current-filter").textContent =
+    `filter: ${labels[activeFilter]}${activeSort ? sortLabels[activeSort] : ""}`;
+}
+
+function updateUrl() {
+  const params = new URLSearchParams();
+  if (activeFilter !== "all") params.set("filter", activeFilter);
+  if (activeSort) params.set("sort", activeSort);
+  const qs = params.toString();
+  const newUrl = qs ? `${location.pathname}?${qs}` : location.pathname;
+  history.replaceState(null, "", newUrl);
+}
+
+function readUrl() {
+  const params = new URLSearchParams(location.search);
+  const f = params.get("filter");
+  const s = params.get("sort");
+  if (f && ["launched", "pre-tge"].includes(f)) applyFilter(f);
+  if (s && ["fdv", "conf", "risk", "short"].includes(s)) applySort(s);
+}
+
+document.addEventListener("click", e => {
+  const action = e.target.dataset.action;
+  if (!action) return;
+  if (action.startsWith("sort-")) applySort(action.slice(5));
+  else if (action.startsWith("filter-")) applyFilter(action.slice(7));
+  else if (action === "reset") reset();
+});
+
+document.getElementById("copy-url").addEventListener("click", () => {
+  navigator.clipboard.writeText(location.href).then(() => {
+    const btn = document.getElementById("copy-url");
+    const orig = btn.textContent;
+    btn.textContent = "✓ 복사됨";
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+});
+
+// Theme toggle
+const toggleBtn = document.getElementById("theme-toggle");
+function setTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  toggleBtn.textContent = t === "dark" ? "☀️ Light" : "🌙 Dark";
+  localStorage.setItem("theme", t);
+  if (PROJECTS.length) {
+    render(current);
+    renderChart();
+  }
+}
+toggleBtn.addEventListener("click", () => {
+  setTheme(isDark() ? "light" : "dark");
+});
+
+// Init theme from storage or system preference
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) setTheme(savedTheme);
+else if (matchMedia("(prefers-color-scheme: dark)").matches) setTheme("dark");
+
+// Chart
+let chartInstance = null;
+function renderChart() {
+  if (!PROJECTS.length) return;
+  const data = [...PROJECTS].sort((a, b) => b.shortScore - a.shortScore);
+  const colors = data.map(d => {
+    if (d.shortScore >= 80) return "#A32D2D";
+    if (d.shortScore >= 50) return "#EF9F27";
+    return "#5DCAA5";
+  });
+  const textColor = isDark() ? "#B4B2A9" : "#5F5E5A";
+  const gridColor = isDark() ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)";
+
+  if (chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(document.getElementById("shortChart"), {
+    type: "bar",
+    data: {
+      labels: data.map(d => d.name),
+      datasets: [{
+        label: "TGE short 매력도",
+        data: data.map(d => d.shortScore),
+        backgroundColor: colors,
+        borderWidth: 0
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => data[ctx.dataIndex].note
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          max: 100,
+          title: { display: true, text: "Short 매력도 (100점 만점)", color: textColor },
+          ticks: { color: textColor },
+          grid: { color: gridColor }
+        },
+        y: {
+          ticks: { font: { size: 13 }, color: textColor },
+          grid: { color: gridColor }
+        }
+      }
+    }
+  });
+}
+
+// Load data
+fetch("./data/projects.json")
+  .then(r => {
+    if (!r.ok) throw new Error("Failed to load data/projects.json");
+    return r.json();
+  })
+  .then(json => {
+    PROJECTS = json.projects;
+    current = [...PROJECTS];
+    render(current);
+    renderChart();
+    readUrl();
+  })
+  .catch(err => {
+    document.getElementById("card-grid").innerHTML =
+      `<div style="padding: 2rem; text-align: center; color: var(--text-secondary); grid-column: 1 / -1;">
+        데이터 로딩 실패: ${err.message}<br>
+        <small>로컬에서 열 때는 <code>python3 -m http.server</code> 등으로 서버를 띄워주세요.</small>
+      </div>`;
+    console.error(err);
+  });
+</script>
+</body>
+</html>
