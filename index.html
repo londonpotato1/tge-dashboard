@@ -320,10 +320,80 @@
   }
   footer a { color: var(--text-info); }
 
+  /* Live data UI (Phase 3-C) */
+  .refresh-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-bottom: 1rem;
+  }
+  .refresh-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+  }
+  .refresh-badge.stale {
+    background: var(--bg-warning);
+    color: var(--text-warning);
+  }
+  .partial-warn {
+    background: var(--bg-warning);
+    color: var(--text-warning);
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+
+  .live-stats {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 4px 8px;
+    font-size: 12px;
+    padding: 8px 10px;
+    background: var(--bg-info);
+    border-radius: 6px;
+    color: var(--text-info);
+  }
+  .live-stats .live-key { opacity: 0.75; }
+  .live-stats .live-val { font-family: "SF Mono", Menlo, Consolas, monospace; }
+
+  .pm-bars { display: flex; flex-direction: column; gap: 3px; }
+  .pm-bar-row { display: grid; grid-template-columns: 60px 1fr 44px; gap: 6px; align-items: center; font-size: 10px; }
+  .pm-bar-label { color: var(--text-secondary); font-family: "SF Mono", Menlo, Consolas, monospace; }
+  .pm-bar-track { position: relative; height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden; }
+  .pm-bar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--text-info); border-radius: 3px; }
+  .pm-bar-fill.closed { opacity: 0.45; }
+  .pm-bar-pct { color: var(--text-secondary); text-align: right; font-family: "SF Mono", Menlo, Consolas, monospace; }
+
+  .state-line {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+  .error-line {
+    font-size: 11px;
+    color: var(--text-warning);
+    background: var(--bg-warning);
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+
   @media (max-width: 600px) {
     .container { padding: 1rem; }
     #card-grid { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .kv-grid, .live-stats { grid-template-columns: 80px 1fr; }
+    .pm-bar-row { grid-template-columns: 52px 1fr 38px; }
+    header h1 { font-size: 19px; }
   }
 </style>
 </head>
@@ -344,20 +414,20 @@
         <div class="stat-value">10</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">이미 TGE 완료</div>
-        <div class="stat-value" id="stat-launched">3</div>
-        <div class="stat-hint" id="stat-launched-list">Fluent, USD.AI, Octra</div>
+        <div class="stat-label">TGE 완료</div>
+        <div class="stat-value" id="stat-launched">—</div>
+        <div class="stat-hint" id="stat-launched-list">—</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Q2 2026 TGE 예정</div>
-        <div class="stat-value">4</div>
-        <div class="stat-hint">Pharos, Solstice, Variational, Ink</div>
+        <div class="stat-label">Pre-TGE</div>
+        <div class="stat-value" id="stat-pre-tge">—</div>
+        <div class="stat-hint" id="stat-pre-tge-list">—</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">미정/지연</div>
-        <div class="stat-value">3</div>
-        <div class="stat-hint">Extended, GRVT(Q3), Surf</div>
-      </div>
+    </div>
+
+    <div class="refresh-row" id="refresh-row" hidden>
+      <span class="refresh-badge" id="refresh-badge">data: —</span>
+      <span class="partial-warn" id="partial-warn" hidden>⚠ partial data</span>
     </div>
 
     <div class="controls">
@@ -432,16 +502,43 @@ let current = [];
 let activeFilter = "all";
 let activeSort = null;
 
+const ESC_MAP = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+function esc(s) {
+  if (s == null) return "";
+  return String(s).replace(/[&<>"']/g, ch => ESC_MAP[ch]);
+}
+function safeUrl(u) {
+  if (!u) return "#";
+  const s = String(u).trim();
+  return /^(https?:|mailto:)/i.test(s) ? s.replace(/"/g, "%22") : "#";
+}
+function fmtMoney(n) {
+  if (n == null || !isFinite(n)) return "—";
+  if (n >= 1e9) return "$" + (n / 1e9).toFixed(2) + "B";
+  if (n >= 1e6) return "$" + (n / 1e6).toFixed(1) + "M";
+  if (n >= 1e3) return "$" + (n / 1e3).toFixed(0) + "K";
+  return "$" + (n < 1 ? n.toFixed(4) : n.toFixed(2));
+}
+
+function uiState(p) {
+  const launched = p.status === "launched";
+  const pmStatus = p.polymarket && p.polymarket.live && p.polymarket.live.event_status;
+  const hasPrice = p.live && p.live.current_price_usd != null;
+  if (!launched && (pmStatus === "active" || pmStatus === "partial")) return "pre_tge_market_active";
+  if (!launched && pmStatus === "resolved") return "pre_tge_resolved_only";
+  if (!launched) return "pre_tge_no_market";
+  return hasPrice ? "launched_priced" : "launched_no_price";
+}
+
 function pmMedianNum(p) {
-  const s = p.pmMedian.match(/\d+/);
+  const s = (p.pmMedian || "").match(/\d+/);
   if (!s) return 0;
   const n = parseInt(s[0]);
-  if (p.pmMedian.includes("B")) return n * 1000;
-  return n;
+  return (p.pmMedian || "").includes("B") ? n * 1000 : n;
 }
 
 function getConfidence(p) {
-  const m = p.fdvPoly.match(/>?\$?\d+M?B?\s*\((\d+)%\)/);
+  const m = (p.fdvPoly || "").match(/>?\$?\d+M?B?\s*\((\d+)%\)/);
   return m ? parseInt(m[1]) : 0;
 }
 
@@ -449,60 +546,107 @@ function isDark() {
   return document.documentElement.getAttribute("data-theme") === "dark";
 }
 
+function renderLiveBlock(p, state) {
+  const live = p.live || {};
+  const pml = (p.polymarket && p.polymarket.live) || {};
+  const resol = pml.resolution_summary;
+
+  if (state === "launched_priced") {
+    const blocks = [
+      `<div class="live-stats">
+         <div class="live-key">Price</div><div class="live-val">${esc(fmtMoney(live.current_price_usd))}</div>
+         <div class="live-key">FDV</div><div class="live-val">${esc(fmtMoney(live.current_fdv_usd))}</div>
+         <div class="live-key">24h Vol</div><div class="live-val">${esc(fmtMoney(live.volume_24h_usd))}</div>
+       </div>`
+    ];
+    if (resol) blocks.push(`<div class="state-line">📊 PM: ${esc(resol)}</div>`);
+    return blocks.join("");
+  }
+  if (state === "launched_no_price") {
+    const err = live.error ? `<div class="error-line">⚠ ${esc(live.error)}</div>` : "";
+    return `<div class="state-line">⏳ TGE 완료 · 가격 미수집 (CoinGecko 미등록)</div>${err}`;
+  }
+  if (state === "pre_tge_market_active") {
+    return `<div class="state-line">🎲 PM 시장 활성</div>${renderPmBars(pml.markets)}`;
+  }
+  if (state === "pre_tge_resolved_only") {
+    const summary = resol ? esc(resol) : "시장 종결";
+    return `<div class="state-line">📊 ${summary} · TGE 대기</div>`;
+  }
+  return `<div class="state-line">📅 PM 시장 없음 · 정성 데이터만</div>`;
+}
+
+function renderPmBars(markets) {
+  if (!Array.isArray(markets) || !markets.length) return "";
+  return `<div class="pm-bars">` + markets.map(m => {
+    const pct = Math.max(0, Math.min(1, Number(m.yes_price) || 0)) * 100;
+    const closedCls = m.closed ? " closed" : "";
+    return `<div class="pm-bar-row">
+      <div class="pm-bar-label">${esc(m.threshold_label)}</div>
+      <div class="pm-bar-track"><div class="pm-bar-fill${closedCls}" style="width:${pct.toFixed(0)}%"></div></div>
+      <div class="pm-bar-pct">${pct.toFixed(0)}%</div>
+    </div>`;
+  }).join("") + `</div>`;
+}
+
 function render(list) {
   const grid = document.getElementById("card-grid");
   const dark = isDark();
 
   grid.innerHTML = list.map(p => {
-    const c = colorMap[p.catColor];
-    const r = colorMap[p.riskColor];
+    const c = colorMap[p.catColor] || colorMap.gray;
+    const r = colorMap[p.riskColor] || colorMap.gray;
     const catBg = dark ? c.darkFill : c.fill;
     const catText = dark ? c.darkText : c.text;
     const riskBg = dark ? r.darkFill : r.fill;
     const riskText = dark ? r.darkText : r.text;
     const statusClass = p.status === "launched" ? "status-launched" : "status-pre-tge";
+    const state = uiState(p);
+    const links = p.links || {};
 
     return `
-      <div class="project-card">
+      <div class="project-card" data-state="${esc(state)}">
         <div class="card-header">
           <div>
-            <div class="card-title">${p.name} <span class="card-ticker">$${p.ticker}</span></div>
-            <div class="badge" style="margin-top: 4px; background: ${catBg}; color: ${catText};">${p.cat}</div>
+            <div class="card-title">${esc(p.name)} <span class="card-ticker">$${esc(p.ticker)}</span></div>
+            <div class="badge" style="margin-top: 4px; background: ${catBg}; color: ${catText};">${esc(p.cat)}</div>
           </div>
-          <div class="badge badge-status ${statusClass}">${p.statusLabel}</div>
+          <div class="badge badge-status ${statusClass}">${esc(p.statusLabel)}</div>
         </div>
 
         <div class="kv-grid">
           <div class="kv-key">TGE</div>
-          <div class="kv-val">${p.tge}</div>
+          <div class="kv-val">${esc(p.tge)}</div>
           <div class="kv-key">Raised</div>
-          <div class="kv-val">${p.raised}</div>
+          <div class="kv-val">${esc(p.raised)}</div>
           <div class="kv-key">Target FDV</div>
-          <div class="kv-val">${p.valuation}</div>
+          <div class="kv-val">${esc(p.valuation)}</div>
           <div class="kv-key">PM mode</div>
-          <div class="kv-val" style="font-weight: 500;">${p.pmMode}</div>
+          <div class="kv-val" style="font-weight: 500;">${esc(p.pmMode)}</div>
         </div>
 
+        ${renderLiveBlock(p, state)}
+
         <div class="poly-box">
-          <div class="poly-label">Polymarket FDV 확률</div>
-          <div class="poly-data">${p.fdvPoly}</div>
+          <div class="poly-label">Polymarket FDV 확률 (스냅샷)</div>
+          <div class="poly-data">${esc(p.fdvPoly)}</div>
         </div>
 
         <div class="tags">
-          <span class="tag" style="background: ${riskBg}; color: ${riskText};">Risk: ${p.risk}</span>
-          <span class="tag tag-neutral">Momentum: ${p.momentum}</span>
-          <span class="tag tag-neutral">Short: ${p.shortScore}/100</span>
+          <span class="tag" style="background: ${riskBg}; color: ${riskText};">Risk: ${esc(p.risk)}</span>
+          <span class="tag tag-neutral">Momentum: ${esc(p.momentum)}</span>
+          <span class="tag tag-neutral">Short: ${esc(p.shortScore)}/100</span>
         </div>
 
-        <div class="card-section"><strong>Backers:</strong> <span>${p.backers}</span></div>
-        <div class="card-section"><strong>Tokenomics:</strong> <span>${p.tokenomics}</span></div>
-        <div class="card-section"><strong>Community:</strong> <span>${p.community}</span></div>
+        <div class="card-section"><strong>Backers:</strong> <span>${esc(p.backers)}</span></div>
+        <div class="card-section"><strong>Tokenomics:</strong> <span>${esc(p.tokenomics)}</span></div>
+        <div class="card-section"><strong>Community:</strong> <span>${esc(p.community)}</span></div>
 
-        <div class="note-box">💡 ${p.note}</div>
+        <div class="note-box">💡 ${esc(p.note)}</div>
 
         <div class="card-actions">
-          <a href="${p.links.website}" target="_blank" rel="noopener">Website ↗</a>
-          <a href="${p.links.twitter}" target="_blank" rel="noopener">Twitter ↗</a>
+          <a href="${esc(safeUrl(links.website))}" target="_blank" rel="noopener">Website ↗</a>
+          <a href="${esc(safeUrl(links.twitter))}" target="_blank" rel="noopener">Twitter ↗</a>
         </div>
       </div>
     `;
@@ -664,6 +808,36 @@ function renderChart() {
   });
 }
 
+function updateRefreshBadge(meta) {
+  const row = document.getElementById("refresh-row");
+  const badge = document.getElementById("refresh-badge");
+  const warn = document.getElementById("partial-warn");
+  const live = (meta && meta.live) || {};
+  if (!live.batch_ts) return;
+
+  const ts = new Date(live.batch_ts);
+  if (isNaN(ts.getTime())) return;
+  const ageMin = Math.max(0, Math.floor((Date.now() - ts.getTime()) / 60000));
+  const ageLabel = ageMin < 1 ? "just now"
+    : ageMin < 60 ? `${ageMin}m ago`
+    : ageMin < 1440 ? `${Math.floor(ageMin / 60)}h ${ageMin % 60}m ago`
+    : `${Math.floor(ageMin / 1440)}d ago`;
+  badge.textContent = `data: ${ageLabel} (${ts.toISOString().slice(0, 16).replace("T", " ")} UTC)`;
+  badge.classList.toggle("stale", ageMin > 90);
+  warn.hidden = !live.partial_failure;
+  row.hidden = false;
+}
+
+function updateStats(list) {
+  const launched = list.filter(p => p.status === "launched");
+  const preTge = list.filter(p => p.status !== "launched");
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set("stat-launched", String(launched.length));
+  set("stat-launched-list", launched.map(p => p.name).join(", ") || "—");
+  set("stat-pre-tge", String(preTge.length));
+  set("stat-pre-tge-list", preTge.map(p => p.name).join(", ") || "—");
+}
+
 // Load data
 fetch("./data/projects.json")
   .then(r => {
@@ -673,6 +847,8 @@ fetch("./data/projects.json")
   .then(json => {
     PROJECTS = json.projects;
     current = [...PROJECTS];
+    updateRefreshBadge(json.meta);
+    updateStats(PROJECTS);
     render(current);
     renderChart();
     readUrl();
@@ -680,7 +856,7 @@ fetch("./data/projects.json")
   .catch(err => {
     document.getElementById("card-grid").innerHTML =
       `<div style="padding: 2rem; text-align: center; color: var(--text-secondary); grid-column: 1 / -1;">
-        데이터 로딩 실패: ${err.message}<br>
+        데이터 로딩 실패: ${esc(err.message)}<br>
         <small>로컬에서 열 때는 <code>python3 -m http.server</code> 등으로 서버를 띄워주세요.</small>
       </div>`;
     console.error(err);
