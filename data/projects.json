@@ -1,10 +1,15 @@
 {
-  "metadata": {
-    "snapshot_date": "2026-04-17",
-    "polymarket_snapshot": "2026-04-17 (live pull)",
-    "source": "Polymarket (live) / CryptoDep / official project disclosures",
-    "description": "Upcoming Projects FDV Forecasts on Polymarket — 10 pre-TGE/newly-launched crypto projects. Cross-verified via 20 independent agents (2 per project) on 2026-04-17.",
-    "factcheck_notes": "Corrections applied: Fluent status (ICO 종료, 메인넷 대기), Solstice TGE (Dec 2025 완료 + USX depeg), Variational TVL (실제 $33M), Ink Kraken valuation ($13.3B), Pharos funding ($52M). See README for full changelog."
+  "meta": {
+    "live": {
+      "batch_ts": "2026-05-15T02:47:33+00:00",
+      "source": "polymarket-gamma + coingecko",
+      "partial_failure": false
+    },
+    "snapshot_date": "2026-05-15",
+    "polymarket_snapshot": "live (Gamma API)",
+    "source": "Polymarket (live) / CoinGecko (live) / DefiLlama (live) + curated manifest",
+    "description": "10 pre-TGE/newly-launched crypto projects. Polymarket FDV markets + CoinGecko/DefiLlama prices live (cron 1h). Manifest curated manually.",
+    "factcheck_notes": "2026-05-15 schema v3 migration (Phase 3-A). Status/contracts 갱신은 Phase 2 researcher 결과 반영 예정."
   },
   "projects": [
     {
@@ -12,9 +17,9 @@
       "ticker": "PHRS",
       "cat": "L1 Blockchain (RWA)",
       "catColor": "purple",
-      "status": "pre-tge",
-      "statusLabel": "Q2 2026 예정",
-      "tge": "Q2 2026 (메인넷과 동시)",
+      "status": "launched",
+      "statusLabel": "TGE 완료 (CoinGecko 등록)",
+      "tge": "Q2 2026 (메인넷과 동시) — 실제 TGE 완료, PROS 거래중",
       "raised": "$52M (seed $8M + Series A $44M)",
       "valuation": "~$1B (GCL 전략적 투자 기준)",
       "fdvPoly": ">$50M (96%), $100M (91%), $200M (94%), $500M (67%), $1B (7%)",
@@ -31,6 +36,97 @@
       "links": {
         "website": "https://www.pharos.xyz/",
         "twitter": "https://x.com/PharosNetwork"
+      },
+      "polymarket": {
+        "manifest": {
+          "event_slug": "pharos-network-fdv-above-one-day-after-launch"
+        },
+        "live": {
+          "event_status": "resolved",
+          "event_volume24hr_usd": null,
+          "markets": [
+            {
+              "threshold_label": "$50M",
+              "threshold_usd": 50000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$100M",
+              "threshold_usd": 100000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$200M",
+              "threshold_usd": 200000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.998,
+              "closed": true
+            },
+            {
+              "threshold_label": "$300M",
+              "threshold_usd": 300000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$500M",
+              "threshold_usd": 500000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$800M",
+              "threshold_usd": 800000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$1B",
+              "threshold_usd": 1000000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.012,
+              "closed": true
+            },
+            {
+              "threshold_label": "$1.5B",
+              "threshold_usd": 1500000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.002,
+              "closed": true
+            },
+            {
+              "threshold_label": "$2B",
+              "threshold_usd": 2000000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.002,
+              "closed": true
+            }
+          ],
+          "pulled_at": "2026-05-15T02:47:29+00:00",
+          "error": null,
+          "resolution_summary": "FDV ≥ $800M resolved Yes"
+        }
+      },
+      "live": {
+        "manifest": {
+          "coingecko_id": "pharos-network",
+          "contract": null,
+          "chain": null
+        },
+        "current_price_usd": 0.757463,
+        "current_fdv_usd": 751479235,
+        "volume_24h_usd": 32917624,
+        "source": "coingecko",
+        "pulled_at": "2026-05-15T02:47:33+00:00",
+        "error": null,
+        "consecutive_fail_count": 0
       }
     },
     {
@@ -57,6 +153,90 @@
       "links": {
         "website": "https://www.variational.io/",
         "twitter": "https://x.com/variational_io"
+      },
+      "polymarket": {
+        "manifest": {
+          "event_slug": "variational-fdv-above-one-day-after-launch"
+        },
+        "live": {
+          "event_status": "active",
+          "event_volume24hr_usd": 6362.925709,
+          "markets": [
+            {
+              "threshold_label": "$100M",
+              "threshold_usd": 100000000.0,
+              "yes_price": 0.9615,
+              "last_traded": 0.964,
+              "closed": false
+            },
+            {
+              "threshold_label": "$200M",
+              "threshold_usd": 200000000.0,
+              "yes_price": 0.93,
+              "last_traded": 0.9,
+              "closed": false
+            },
+            {
+              "threshold_label": "$300M",
+              "threshold_usd": 300000000.0,
+              "yes_price": 0.72,
+              "last_traded": 0.72,
+              "closed": false
+            },
+            {
+              "threshold_label": "$500M",
+              "threshold_usd": 500000000.0,
+              "yes_price": 0.505,
+              "last_traded": 0.51,
+              "closed": false
+            },
+            {
+              "threshold_label": "$800M",
+              "threshold_usd": 800000000.0,
+              "yes_price": 0.24,
+              "last_traded": 0.23,
+              "closed": false
+            },
+            {
+              "threshold_label": "$1B",
+              "threshold_usd": 1000000000.0,
+              "yes_price": 0.175,
+              "last_traded": 0.16,
+              "closed": false
+            },
+            {
+              "threshold_label": "$2B",
+              "threshold_usd": 2000000000.0,
+              "yes_price": 0.0355,
+              "last_traded": 0.032,
+              "closed": false
+            },
+            {
+              "threshold_label": "$3B",
+              "threshold_usd": 3000000000.0,
+              "yes_price": 0.0225,
+              "last_traded": 0.012,
+              "closed": false
+            },
+            {
+              "threshold_label": "$4B",
+              "threshold_usd": 4000000000.0,
+              "yes_price": 0.014,
+              "last_traded": 0.008,
+              "closed": false
+            },
+            {
+              "threshold_label": "$5B",
+              "threshold_usd": 5000000000.0,
+              "yes_price": 0.0115,
+              "last_traded": 0.011,
+              "closed": false
+            }
+          ],
+          "pulled_at": "2026-05-15T02:47:30+00:00",
+          "error": null,
+          "resolution_summary": null
+        }
       }
     },
     {
@@ -64,9 +244,9 @@
       "ticker": "BLEND",
       "cat": "L2 (Blended Execution Network)",
       "catColor": "blue",
-      "status": "pre-tge",
-      "statusLabel": "ICO 종료, TGE ~4/28 대기",
-      "tge": "ICO 2026-04-07~13 (sale $1M), 메인넷+TGE ~2026-04-28",
+      "status": "launched",
+      "statusLabel": "TGE 완료 (2026-04-24)",
+      "tge": "메인넷+TGE 2026-04-24 (Ethereum L2). Upbit/Bithumb KRW 4/29 상장",
       "raised": "$11.2M (seed $8M + private $2.2M + ICO $1M)",
       "valuation": "$100M FDV (public sale), $0.10/token",
       "fdvPoly": ">$20M (98%), $50M (86%), $100M (53%), $200M (15%)",
@@ -83,6 +263,90 @@
       "links": {
         "website": "https://www.fluent.xyz/",
         "twitter": "https://x.com/fluentxyz"
+      },
+      "polymarket": {
+        "manifest": {
+          "event_slug": "fluent-fdv-above-one-day-after-launch"
+        },
+        "live": {
+          "event_status": "resolved",
+          "event_volume24hr_usd": null,
+          "markets": [
+            {
+              "threshold_label": "$20M",
+              "threshold_usd": 20000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$50M",
+              "threshold_usd": 50000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.998,
+              "closed": true
+            },
+            {
+              "threshold_label": "$100M",
+              "threshold_usd": 100000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$150M",
+              "threshold_usd": 150000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.007,
+              "closed": true
+            },
+            {
+              "threshold_label": "$200M",
+              "threshold_usd": 200000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.001,
+              "closed": true
+            },
+            {
+              "threshold_label": "$300M",
+              "threshold_usd": 300000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.001,
+              "closed": true
+            },
+            {
+              "threshold_label": "$500M",
+              "threshold_usd": 500000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.001,
+              "closed": true
+            },
+            {
+              "threshold_label": "$800M",
+              "threshold_usd": 800000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.023,
+              "closed": true
+            }
+          ],
+          "pulled_at": "2026-05-15T02:47:30+00:00",
+          "error": null,
+          "resolution_summary": "FDV ≥ $100M resolved Yes"
+        }
+      },
+      "live": {
+        "manifest": {
+          "coingecko_id": "fluent-network",
+          "contract": null,
+          "chain": null
+        },
+        "current_price_usd": 0.118708,
+        "current_fdv_usd": 118618659,
+        "volume_24h_usd": 14653831,
+        "source": "coingecko",
+        "pulled_at": "2026-05-15T02:47:33+00:00",
+        "error": null,
+        "consecutive_fail_count": 0
       }
     },
     {
@@ -109,6 +373,132 @@
       "links": {
         "website": "https://usd.ai",
         "twitter": "https://x.com/USDai_Official"
+      },
+      "polymarket": {
+        "manifest": {
+          "event_slug": "usdai-fdv-above-one-day-after-launch"
+        },
+        "live": {
+          "event_status": "resolved",
+          "event_volume24hr_usd": null,
+          "markets": [
+            {
+              "threshold_label": "$100M",
+              "threshold_usd": 100000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$150M",
+              "threshold_usd": 150000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$200M",
+              "threshold_usd": 200000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$250M",
+              "threshold_usd": 250000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$300M",
+              "threshold_usd": 300000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$400M",
+              "threshold_usd": 400000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$500M",
+              "threshold_usd": 500000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$650M",
+              "threshold_usd": 650000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$800M",
+              "threshold_usd": 800000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$1B",
+              "threshold_usd": 1000000000.0,
+              "yes_price": 1.0,
+              "last_traded": 0.999,
+              "closed": true
+            },
+            {
+              "threshold_label": "$2B",
+              "threshold_usd": 2000000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.001,
+              "closed": true
+            },
+            {
+              "threshold_label": "$3B",
+              "threshold_usd": 3000000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.002,
+              "closed": true
+            },
+            {
+              "threshold_label": "$4B",
+              "threshold_usd": 4000000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.001,
+              "closed": true
+            },
+            {
+              "threshold_label": "$6B",
+              "threshold_usd": 6000000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.002,
+              "closed": true
+            }
+          ],
+          "pulled_at": "2026-05-15T02:47:30+00:00",
+          "error": null,
+          "resolution_summary": "FDV ≥ $1B resolved Yes"
+        }
+      },
+      "live": {
+        "manifest": {
+          "coingecko_id": "usdai",
+          "contract": null,
+          "chain": "arbitrum"
+        },
+        "current_price_usd": 1.0,
+        "current_fdv_usd": 272729963,
+        "volume_24h_usd": 384063,
+        "source": "coingecko",
+        "pulled_at": "2026-05-15T02:47:33+00:00",
+        "error": null,
+        "consecutive_fail_count": 0
       }
     },
     {
@@ -135,6 +525,69 @@
       "links": {
         "website": "https://extended.exchange/",
         "twitter": "https://x.com/ExtendedApp"
+      },
+      "polymarket": {
+        "manifest": {
+          "event_slug": "extended-fdv-above-one-day-after-launch"
+        },
+        "live": {
+          "event_status": "active",
+          "event_volume24hr_usd": 1010.790173,
+          "markets": [
+            {
+              "threshold_label": "$150M",
+              "threshold_usd": 150000000.0,
+              "yes_price": 0.695,
+              "last_traded": 0.7,
+              "closed": false
+            },
+            {
+              "threshold_label": "$300M",
+              "threshold_usd": 300000000.0,
+              "yes_price": 0.385,
+              "last_traded": 0.39,
+              "closed": false
+            },
+            {
+              "threshold_label": "$500M",
+              "threshold_usd": 500000000.0,
+              "yes_price": 0.22,
+              "last_traded": 0.2,
+              "closed": false
+            },
+            {
+              "threshold_label": "$800M",
+              "threshold_usd": 800000000.0,
+              "yes_price": 0.085,
+              "last_traded": 0.08,
+              "closed": false
+            },
+            {
+              "threshold_label": "$1B",
+              "threshold_usd": 1000000000.0,
+              "yes_price": 0.065,
+              "last_traded": 0.07,
+              "closed": false
+            },
+            {
+              "threshold_label": "$2B",
+              "threshold_usd": 2000000000.0,
+              "yes_price": 0.04,
+              "last_traded": 0.013,
+              "closed": false
+            },
+            {
+              "threshold_label": "$3B",
+              "threshold_usd": 3000000000.0,
+              "yes_price": 0.0145,
+              "last_traded": 0.014,
+              "closed": false
+            }
+          ],
+          "pulled_at": "2026-05-15T02:47:31+00:00",
+          "error": null,
+          "resolution_summary": null
+        }
       }
     },
     {
@@ -161,6 +614,69 @@
       "links": {
         "website": "https://solstice.finance/",
         "twitter": "https://x.com/solsticefi"
+      },
+      "polymarket": {
+        "manifest": {
+          "event_slug": "solstice-fdv-above-one-day-after-launch"
+        },
+        "live": {
+          "event_status": "active",
+          "event_volume24hr_usd": 21253.102462,
+          "markets": [
+            {
+              "threshold_label": "$50M",
+              "threshold_usd": 50000000.0,
+              "yes_price": 0.9365,
+              "last_traded": 0.95,
+              "closed": false
+            },
+            {
+              "threshold_label": "$100M",
+              "threshold_usd": 100000000.0,
+              "yes_price": 0.67,
+              "last_traded": 0.65,
+              "closed": false
+            },
+            {
+              "threshold_label": "$200M",
+              "threshold_usd": 200000000.0,
+              "yes_price": 0.297,
+              "last_traded": 0.286,
+              "closed": false
+            },
+            {
+              "threshold_label": "$300M",
+              "threshold_usd": 300000000.0,
+              "yes_price": 0.1455,
+              "last_traded": 0.185,
+              "closed": false
+            },
+            {
+              "threshold_label": "$400M",
+              "threshold_usd": 400000000.0,
+              "yes_price": 0.052,
+              "last_traded": 0.043,
+              "closed": false
+            }
+          ],
+          "pulled_at": "2026-05-15T02:47:31+00:00",
+          "error": null,
+          "resolution_summary": null
+        }
+      },
+      "live": {
+        "manifest": {
+          "coingecko_id": "solstice",
+          "contract": null,
+          "chain": null
+        },
+        "current_price_usd": null,
+        "current_fdv_usd": null,
+        "volume_24h_usd": null,
+        "source": "coingecko",
+        "pulled_at": "2026-05-15T02:47:33+00:00",
+        "error": null,
+        "consecutive_fail_count": 0
       }
     },
     {
@@ -187,6 +703,55 @@
       "links": {
         "website": "https://inkonchain.com/",
         "twitter": "https://x.com/inkonchain"
+      },
+      "polymarket": {
+        "manifest": {
+          "event_slug": "ink-fdv-above-one-day-after-launch"
+        },
+        "live": {
+          "event_status": "active",
+          "event_volume24hr_usd": 2460.706796,
+          "markets": [
+            {
+              "threshold_label": "$250M",
+              "threshold_usd": 250000000.0,
+              "yes_price": 0.845,
+              "last_traded": 0.84,
+              "closed": false
+            },
+            {
+              "threshold_label": "$500M",
+              "threshold_usd": 500000000.0,
+              "yes_price": 0.71,
+              "last_traded": 0.71,
+              "closed": false
+            },
+            {
+              "threshold_label": "$1B",
+              "threshold_usd": 1000000000.0,
+              "yes_price": 0.405,
+              "last_traded": 0.42,
+              "closed": false
+            },
+            {
+              "threshold_label": "$2B",
+              "threshold_usd": 2000000000.0,
+              "yes_price": 0.115,
+              "last_traded": 0.11,
+              "closed": false
+            },
+            {
+              "threshold_label": "$3B",
+              "threshold_usd": 3000000000.0,
+              "yes_price": 0.054,
+              "last_traded": 0.046,
+              "closed": false
+            }
+          ],
+          "pulled_at": "2026-05-15T02:47:31+00:00",
+          "error": null,
+          "resolution_summary": null
+        }
       }
     },
     {
@@ -213,6 +778,69 @@
       "links": {
         "website": "https://grvt.io/",
         "twitter": "https://x.com/grvt_io"
+      },
+      "polymarket": {
+        "manifest": {
+          "event_slug": "grvt-fdv-above-one-day-after-launch"
+        },
+        "live": {
+          "event_status": "active",
+          "event_volume24hr_usd": 1461.419534,
+          "markets": [
+            {
+              "threshold_label": "$50M",
+              "threshold_usd": 50000000.0,
+              "yes_price": 0.9735,
+              "last_traded": 0.974,
+              "closed": false
+            },
+            {
+              "threshold_label": "$100M",
+              "threshold_usd": 100000000.0,
+              "yes_price": 0.82,
+              "last_traded": 0.84,
+              "closed": false
+            },
+            {
+              "threshold_label": "$200M",
+              "threshold_usd": 200000000.0,
+              "yes_price": 0.52,
+              "last_traded": 0.5,
+              "closed": false
+            },
+            {
+              "threshold_label": "$300M",
+              "threshold_usd": 300000000.0,
+              "yes_price": 0.315,
+              "last_traded": 0.31,
+              "closed": false
+            },
+            {
+              "threshold_label": "$500M",
+              "threshold_usd": 500000000.0,
+              "yes_price": 0.24,
+              "last_traded": 0.21,
+              "closed": false
+            },
+            {
+              "threshold_label": "$800M",
+              "threshold_usd": 800000000.0,
+              "yes_price": 0.111,
+              "last_traded": 0.092,
+              "closed": false
+            },
+            {
+              "threshold_label": "$1B",
+              "threshold_usd": 1000000000.0,
+              "yes_price": 0.0545,
+              "last_traded": 0.055,
+              "closed": false
+            }
+          ],
+          "pulled_at": "2026-05-15T02:47:31+00:00",
+          "error": null,
+          "resolution_summary": null
+        }
       }
     },
     {
@@ -239,6 +867,69 @@
       "links": {
         "website": "https://octra.org/",
         "twitter": "https://x.com/octra"
+      },
+      "polymarket": {
+        "manifest": {
+          "event_slug": "octra-fdv-above-one-day-after-launch"
+        },
+        "live": {
+          "event_status": "resolved",
+          "event_volume24hr_usd": null,
+          "markets": [
+            {
+              "threshold_label": "$30M",
+              "threshold_usd": 30000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.005,
+              "closed": true
+            },
+            {
+              "threshold_label": "$100M",
+              "threshold_usd": 100000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.003,
+              "closed": true
+            },
+            {
+              "threshold_label": "$200M",
+              "threshold_usd": 200000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.01,
+              "closed": true
+            },
+            {
+              "threshold_label": "$300M",
+              "threshold_usd": 300000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.078,
+              "closed": true
+            },
+            {
+              "threshold_label": "$400M",
+              "threshold_usd": 400000000.0,
+              "yes_price": 0.0,
+              "last_traded": 0.003,
+              "closed": true
+            }
+          ],
+          "pulled_at": "2026-05-15T02:47:32+00:00",
+          "error": null,
+          "resolution_summary": "all thresholds resolved No"
+        }
+      },
+      "live": {
+        "manifest": {
+          "coingecko_id": "octra",
+          "contract": null,
+          "chain": null
+        },
+        "current_price_usd": 0.057197,
+        "current_fdv_usd": 35752761,
+        "volume_24h_usd": 329040,
+        "source": "coingecko",
+        "pulled_at": "2026-05-15T02:47:33+00:00",
+        "error": null,
+        "consecutive_fail_count": 0
       }
     },
     {
@@ -251,9 +942,9 @@
       "tge": "미공식. Surf 2.0 (2026-02 출시 완료)",
       "raised": "$15M (2025-12-10)",
       "valuation": "미공개",
-      "fdvPoly": "Polymarket 시장 미확인 (live pull 결과 NOT FOUND)",
-      "pmMode": "시장 미확인",
-      "pmMedian": "시장 미확인",
+      "fdvPoly": "Polymarket live 미수집 (Phase 3-B fetch 후 갱신 예정)",
+      "pmMode": "live 대기",
+      "pmMedian": "live 대기",
       "backers": "Pantera Capital (lead), Coinbase Ventures, DCG",
       "tokenomics": "토큰 런치 공식 확정 안 됨",
       "community": "혼재. 공식 '1M+ research reports' 지표, ARR 타겟 $10M by 2026 연말. Cyber 생태계 (ex-CyberConnect co-founder Ryan Li).",
@@ -261,10 +952,59 @@
       "risk": "매우 고",
       "riskColor": "red",
       "shortScore": 65,
-      "note": "TGE 미확정. Polymarket 직접 FDV 시장 발견되지 않음 (2026-04-17 기준). 2027년까지 토큰 미출시 시 다른 시장에서 'No' resolve 가능.",
+      "note": "TGE 미확정. 2026-05 dry-run 에서 Polymarket FDV 시장 확인 (`surf-fdv-above-one-day-after-launch`). 2027년까지 토큰 미출시 시 다른 시장에서 'No' resolve 가능.",
       "links": {
         "website": "https://asksurf.ai/",
         "twitter": "https://x.com/asksurfai"
+      },
+      "polymarket": {
+        "manifest": {
+          "event_slug": "surf-fdv-above-one-day-after-launch"
+        },
+        "live": {
+          "event_status": "active",
+          "event_volume24hr_usd": 15.298628,
+          "markets": [
+            {
+              "threshold_label": "$50M",
+              "threshold_usd": 50000000.0,
+              "yes_price": 0.705,
+              "last_traded": 0.73,
+              "closed": false
+            },
+            {
+              "threshold_label": "$100M",
+              "threshold_usd": 100000000.0,
+              "yes_price": 0.595,
+              "last_traded": 0.55,
+              "closed": false
+            },
+            {
+              "threshold_label": "$200M",
+              "threshold_usd": 200000000.0,
+              "yes_price": 0.55,
+              "last_traded": 0.1,
+              "closed": false
+            },
+            {
+              "threshold_label": "$300M",
+              "threshold_usd": 300000000.0,
+              "yes_price": 0.32,
+              "last_traded": 0.45,
+              "closed": false
+            },
+            {
+              "threshold_label": "$500M",
+              "threshold_usd": 500000000.0,
+              "yes_price": 0.28,
+              "last_traded": 0.4,
+              "closed": false
+            }
+          ],
+          "pulled_at": "2026-05-15T02:47:32+00:00",
+          "error": null,
+          "resolution_summary": null
+        }
       }
     }
   ]
