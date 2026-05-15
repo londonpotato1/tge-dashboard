@@ -1,0 +1,64 @@
+name: Refresh live data (1h)
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch live data
+        env:
+          COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+        run: |
+          python3 scripts/fetch_live_data.py
+
+      # Sanity-only — NOT a path guard. The real LIVE_WRITABLE_PATHS guard
+      # lives inside scripts/fetch_live_data.py::validate_writable() and
+      # raises before this step runs. This block just guards against
+      # catastrophic file corruption.
+      - name: Sanity check
+        run: |
+          python3 -c "
+          import json
+          d = json.load(open('data/projects.json'))
+          assert 'meta' in d and 'live' in d['meta'], 'meta.live missing'
+          assert d['meta']['live'].get('batch_ts'), 'batch_ts missing'
+          assert isinstance(d.get('projects'), list) and len(d['projects']) == 10, 'projects count'
+          for p in d['projects']:
+              pm = p.get('polymarket', {})
+              assert 'manifest' in pm and 'event_slug' in pm.get('manifest', {}), p.get('name')
+          print('sanity ok')
+          "
+
+      - name: Commit & push (only if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/projects.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit (idempotency skip)."
+            exit 0
+          fi
+          BATCH_TS=$(python3 -c "import json; print(json.load(open('data/projects.json'))['meta']['live'].get('batch_ts','?'))")
+          git commit -m "data: live refresh ${BATCH_TS}"
+          git push
