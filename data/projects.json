@@ -1,7 +1,7 @@
 {
   "meta": {
     "live": {
-      "batch_ts": "2026-11-07T08:13:59+00:00",
+      "batch_ts": "2026-11-07T15:22:29+00:00",
       "source": "polymarket-gamma + coingecko",
       "partial_failure": false
     },
@@ -109,7 +109,7 @@
               "closed": true
             }
           ],
-          "pulled_at": "2026-11-07T08:13:57+00:00",
+          "pulled_at": "2026-11-07T15:22:27+00:00",
           "error": null,
           "resolution_summary": "FDV ≥ $800M resolved Yes"
         }
@@ -120,11 +120,11 @@
           "contract": null,
           "chain": null
         },
-        "current_price_usd": 0.541709,
-        "current_fdv_usd": 541709116,
-        "volume_24h_usd": 1195499,
+        "current_price_usd": 0.52495,
+        "current_fdv_usd": 525137667,
+        "volume_24h_usd": 1013605,
         "source": "coingecko",
-        "pulled_at": "2026-11-07T08:13:59+00:00",
+        "pulled_at": "2026-11-07T15:22:29+00:00",
         "error": null,
         "consecutive_fail_count": 0
       }
@@ -160,13 +160,13 @@
         },
         "live": {
           "event_status": "active",
-          "event_volume24hr_usd": 4226.409526,
+          "event_volume24hr_usd": 3651.931441,
           "markets": [
             {
               "threshold_label": "$100M",
               "threshold_usd": 100000000.0,
-              "yes_price": 0.9685,
-              "last_traded": 0.979,
+              "yes_price": 0.9725,
+              "last_traded": 0.977,
               "closed": false
             },
             {
@@ -179,8 +179,8 @@
             {
               "threshold_label": "$300M",
               "threshold_usd": 300000000.0,
-              "yes_price": 0.9415,
-              "last_traded": 0.947,
+              "yes_price": 0.941,
+              "last_traded": 0.935,
               "closed": false
             },
             {
@@ -193,28 +193,28 @@
             {
               "threshold_label": "$800M",
               "threshold_usd": 800000000.0,
-              "yes_price": 0.72,
-              "last_traded": 0.73,
+              "yes_price": 0.715,
+              "last_traded": 0.72,
               "closed": false
             },
             {
               "threshold_label": "$1B",
               "threshold_usd": 1000000000.0,
-              "yes_price": 0.57,
-              "last_traded": 0.58,
+              "yes_price": 0.565,
+              "last_traded": 0.57,
               "closed": false
             },
             {
               "threshold_label": "$2B",
               "threshold_usd": 2000000000.0,
-              "yes_price": 0.259,
-              "last_traded": 0.257,
+              "yes_price": 0.2485,
+              "last_traded": 0.256,
               "closed": false
             },
             {
               "threshold_label": "$3B",
               "threshold_usd": 3000000000.0,
-              "yes_price": 0.1345,
+              "yes_price": 0.135,
               "last_traded": 0.126,
               "closed": false
             },
@@ -233,7 +233,7 @@
               "closed": false
             }
           ],
-          "pulled_at": "2026-11-07T08:13:57+00:00",
+          "pulled_at": "2026-11-07T15:22:28+00:00",
           "error": null,
           "resolution_summary": null
         }
@@ -329,7 +329,7 @@
               "closed": true
             }
           ],
-          "pulled_at": "2026-11-07T08:13:58+00:00",
+          "pulled_at": "2026-11-07T15:22:28+00:00",
           "error": null,
           "resolution_summary": "FDV ≥ $100M resolved Yes"
         }
@@ -340,11 +340,11 @@
           "contract": null,
           "chain": null
         },
-        "current_price_usd": 0.052274,
-        "current_fdv_usd": 52273912,
-        "volume_24h_usd": 3847308,
+        "current_price_usd": 0.053186,
+        "current_fdv_usd": 53184283,
+        "volume_24h_usd": 13740163,
         "source": "coingecko",
-        "pulled_at": "2026-11-07T08:13:59+00:00",
+        "pulled_at": "2026-11-07T15:22:29+00:00",
         "error": null,
         "consecutive_fail_count": 0
       }
@@ -481,7 +481,7 @@
               "closed": true
             }
           ],
-          "pulled_at": "2026-11-07T08:13:58+00:00",
+          "pulled_at": "2026-11-07T15:22:28+00:00",
           "error": null,
           "resolution_summary": "FDV ≥ $1B resolved Yes"
         }
@@ -492,11 +492,11 @@
           "contract": null,
           "chain": "arbitrum"
         },
-        "current_price_usd": 0.998915,
-        "current_fdv_usd": 157633049,
-        "volume_24h_usd": 181970,
+        "current_price_usd": 0.999045,
+        "current_fdv_usd": 157652135,
+        "volume_24h_usd": 81219,
         "source": "coingecko",
-        "pulled_at": "2026-11-07T08:13:59+00:00",
+        "pulled_at": "2026-11-07T15:22:29+00:00",
         "error": null,
         "consecutive_fail_count": 0
       }
@@ -532,7 +532,7 @@
         },
         "live": {
           "event_status": "active",
-          "event_volume24hr_usd": 1932.10464,
+          "event_volume24hr_usd": 1536.81655,
           "markets": [
             {
               "threshold_label": "$150M",
@@ -544,8 +544,8 @@
             {
               "threshold_label": "$300M",
               "threshold_usd": 300000000.0,
-              "yes_price": 0.285,
-              "last_traded": 0.29,
+              "yes_price": 0.28,
+              "last_traded": 0.27,
               "closed": false
             },
             {
@@ -565,26 +565,26 @@
             {
               "threshold_label": "$1B",
               "threshold_usd": 1000000000.0,
-              "yes_price": 0.031,
+              "yes_price": 0.0315,
               "last_traded": 0.03,
               "closed": false
             },
             {
               "threshold_label": "$2B",
               "threshold_usd": 2000000000.0,
-              "yes_price": 0.015,
+              "yes_price": 0.0145,
               "last_traded": 0.012,
               "closed": false
             },
             {
               "threshold_label": "$3B",
               "threshold_usd": 3000000000.0,
-              "yes_price": 0.0165,
+              "yes_price": 0.016,
               "last_traded": 0.015,
               "closed": false
             }
           ],
-          "pulled_at": "2026-11-07T08:13:58+00:00",
+          "pulled_at": "2026-11-07T15:22:28+00:00",
           "error": null,
           "resolution_summary": null
         }
@@ -673,7 +673,7 @@
               "closed": true
             }
           ],
-          "pulled_at": "2026-11-07T08:13:58+00:00",
+          "pulled_at": "2026-11-07T15:22:28+00:00",
           "error": null,
           "resolution_summary": "FDV ≥ $150M resolved Yes"
         }
@@ -684,11 +684,11 @@
           "contract": null,
           "chain": null
         },
-        "current_price_usd": 0.03960341,
-        "current_fdv_usd": 39603386,
-        "volume_24h_usd": 4497612,
+        "current_price_usd": 0.03880573,
+        "current_fdv_usd": 38801452,
+        "volume_24h_usd": 3681239,
         "source": "coingecko",
-        "pulled_at": "2026-11-07T08:13:59+00:00",
+        "pulled_at": "2026-11-07T15:22:29+00:00",
         "error": null,
         "consecutive_fail_count": 0
       }
@@ -724,7 +724,7 @@
         },
         "live": {
           "event_status": "active",
-          "event_volume24hr_usd": 390.89395,
+          "event_volume24hr_usd": 152.63,
           "markets": [
             {
               "threshold_label": "$100M",
@@ -737,13 +737,13 @@
               "threshold_label": "$250M",
               "threshold_usd": 250000000.0,
               "yes_price": 0.1,
-              "last_traded": 0.1,
+              "last_traded": 0.09,
               "closed": false
             },
             {
               "threshold_label": "$500M",
               "threshold_usd": 500000000.0,
-              "yes_price": 0.105,
+              "yes_price": 0.1,
               "last_traded": 0.12,
               "closed": false
             },
@@ -757,19 +757,19 @@
             {
               "threshold_label": "$2B",
               "threshold_usd": 2000000000.0,
-              "yes_price": 0.039,
+              "yes_price": 0.041,
               "last_traded": 0.02,
               "closed": false
             },
             {
               "threshold_label": "$3B",
               "threshold_usd": 3000000000.0,
-              "yes_price": 0.036,
+              "yes_price": 0.0375,
               "last_traded": 0.029,
               "closed": false
             }
           ],
-          "pulled_at": "2026-11-07T08:13:58+00:00",
+          "pulled_at": "2026-11-07T15:22:29+00:00",
           "error": null,
           "resolution_summary": null
         }
@@ -907,7 +907,7 @@
               "closed": true
             }
           ],
-          "pulled_at": "2026-11-07T08:13:59+00:00",
+          "pulled_at": "2026-11-07T15:22:29+00:00",
           "error": null,
           "resolution_summary": "FDV ≥ $250M resolved Yes"
         }
@@ -982,7 +982,7 @@
               "closed": true
             }
           ],
-          "pulled_at": "2026-11-07T08:13:59+00:00",
+          "pulled_at": "2026-11-07T15:22:29+00:00",
           "error": null,
           "resolution_summary": "all thresholds resolved No"
         }
@@ -993,11 +993,11 @@
           "contract": null,
           "chain": null
         },
-        "current_price_usd": 0.02106203,
-        "current_fdv_usd": 13168036,
-        "volume_24h_usd": 57110,
+        "current_price_usd": 0.02079519,
+        "current_fdv_usd": 13001090,
+        "volume_24h_usd": 57698,
         "source": "coingecko",
-        "pulled_at": "2026-11-07T08:13:59+00:00",
+        "pulled_at": "2026-11-07T15:22:29+00:00",
         "error": null,
         "consecutive_fail_count": 0
       }
@@ -1033,26 +1033,26 @@
         },
         "live": {
           "event_status": "active",
-          "event_volume24hr_usd": 157.64,
+          "event_volume24hr_usd": 127.64,
           "markets": [
             {
               "threshold_label": "$50M",
               "threshold_usd": 50000000.0,
-              "yes_price": 0.605,
+              "yes_price": 0.61,
               "last_traded": 0.52,
               "closed": false
             },
             {
               "threshold_label": "$100M",
               "threshold_usd": 100000000.0,
-              "yes_price": 0.605,
+              "yes_price": 0.625,
               "last_traded": 0.71,
               "closed": false
             },
             {
               "threshold_label": "$200M",
               "threshold_usd": 200000000.0,
-              "yes_price": 0.46,
+              "yes_price": 0.525,
               "last_traded": 0.49,
               "closed": false
             },
@@ -1066,12 +1066,12 @@
             {
               "threshold_label": "$500M",
               "threshold_usd": 500000000.0,
-              "yes_price": 0.36,
+              "yes_price": 0.425,
               "last_traded": 0.36,
               "closed": false
             }
           ],
-          "pulled_at": "2026-11-07T08:13:59+00:00",
+          "pulled_at": "2026-11-07T15:22:29+00:00",
           "error": null,
           "resolution_summary": null
         }
